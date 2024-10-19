@@ -1,0 +1,14 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @loan %>
+
+<% if @loan.state == 'readjustment_requested' %>
+  <%= button_to "Approve Readjustment", update_status_loan_path(@loan), method: :patch, class: 'btn btn-success' %>
+<% end %>
+
+<div>
+  <%= link_to "Edit this loan", edit_loan_path(@loan) %> |
+  <%= link_to "Back to loans", loans_path %>
+
+  <%= button_to "Destroy this loan", @loan, method: :delete %>
+</div>

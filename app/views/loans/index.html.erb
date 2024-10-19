@@ -1,0 +1,67 @@
+<% if user_signed_in? %>
+  <% if current_user.admin? %>
+    <h1>Admin Dashboard</h1>
+    <p>Welcome, <%= current_user.email %></p>
+    <p>Admin Wallet Balance: <%= number_to_currency(current_user.wallet.balance) %></p>
+
+    <h2>All Loans</h2>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Loan ID</th>
+          <th>User</th>
+          <th>Amount</th>
+          <th>Interest Rate</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @loans.each do |loan| %>
+          <tr>
+            <td><%= loan.id %></td>
+            <td><%= loan.user.email %></td>
+            <td><%= number_to_currency(loan.amount) %></td>
+            <td><%= loan.interest_rate %>
+            <td><%= loan.state %></td>
+            <td><%= link_to 'Show', loan %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <%= link_to "New loan", new_loan_path, class: 'btn btn-primary' %>
+    <%= link_to "Manage Users", admin_users_path, class: 'btn btn-secondary' %>
+  <% else %>
+    <h1>User Dashboard</h1>
+    <p>Welcome, <%= current_user.email %></p>
+    <p>User Wallet Balance: <%= number_to_currency(current_user.wallet.balance) %></p>
+
+    <h2>Your Loans</h2>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Loan ID</th>
+          <th>Amount</th>
+          <th>Status</th>
+          <th>Interest Rate</th>
+          <th>Amount Due</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @loans.each do |loan| %>
+          <tr>
+            <td><%= loan.id %></td>
+            <td><%= number_to_currency(loan.amount) %></td>
+            <td><%= loan.state %></td>
+            <td><%= loan.interest_rate %>
+            <td><%= loan.total_amount_due %></td>
+            <td><%= link_to 'Show', loan %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <%= link_to "New loan", new_loan_path, class: 'btn btn-primary' %>
+  <% end %>
+  <%= link_to "Logout", destroy_user_session_path, method: :delete, class: 'btn btn-danger' %>
+<% else %>
+  <%= link_to "Login", new_user_session_path, class: 'btn btn-primary' %>
+<% end %>

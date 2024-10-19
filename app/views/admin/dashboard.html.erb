@@ -1,0 +1,26 @@
+<h1>Admin Dashboard</h1>
+
+<h2>Pending Loan Requests</h2>
+<table>
+  <thead>
+    <tr>
+      <th>User</th>
+      <th>Amount</th>
+      <th>Requested At</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% Loan.where(state: 'requested').each do |loan| %>
+      <tr>
+        <td><%= loan.user.email %></td>
+        <td><%= loan.amount %></td>
+        <td><%= loan.created_at %></td>
+        <td>
+          <%= link_to 'Approve', approve_loan_path(loan), method: :patch, class: 'btn btn-success' %>
+          <%= link_to 'Reject', reject_loan_path(loan), method: :patch, class: 'btn btn-danger' %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
