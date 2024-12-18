@@ -141,7 +141,7 @@ ActiveAdmin.setup do |config|
   # This allows your users to comment on any resource registered with Active Admin.
   #
   # You can completely disable comments:
-  # config.comments = false
+  config.comments = false
   #
   # You can change the name under which comments are registered:
   # config.comments_registration_name = 'AdminComment'
@@ -348,7 +348,7 @@ ActiveAdmin.setup do |config|
   # By default, Active Admin uses Sprocket's asset pipeline.
   # You can switch to using Webpacker here.
   #
-  # config.use_webpacker = true
-  config.register_stylesheet 'arctic_admin.css'
-  config.register_javascript 'arctic_admin.js'
+  # # config.use_webpacker = true
+  # config.register_stylesheet 'arctic_admin.css'
+  # config.register_javascript 'arctic_admin.js'
 end

@@ -16,8 +16,9 @@ Rails.application.routes.draw do
       post :approve
       post :reject
       post :adjust
-      post :repay
+      patch :repay
       patch :update_status
+      patch :accept_reject
     end
   end
 

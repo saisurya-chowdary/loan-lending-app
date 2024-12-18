@@ -3,10 +3,12 @@ class CalculateInterestJob < ApplicationJob
 
   def perform(loan_id)
     loan = Loan.find(loan_id)
+    if loan.state == "approved"
+      interest_amount = (loan.amount * loan.interest_rate / 100)
 
-    interest_amount = (loan.amount * loan.interest_rate / 100)
-    loan.update(total_amount_due: loan.amount + interest_amount)
+        loan.update(total_amount_due: (loan.total_amount_due || loan.amount) + interest_amount)
+    end
 
-    CalculateInterestJob.set(wait: 5.minutes).perform_later(loan_id)
+    CalculateInterestJob.set(wait: 5.seconds).perform_later(loan_id)
   end
 end
