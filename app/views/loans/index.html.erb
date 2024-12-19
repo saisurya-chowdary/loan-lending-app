@@ -56,6 +56,7 @@
             <td><%= loan.total_amount_due %></td>
             <td><%= link_to 'Show', loan %>
               <%= link_to 'Edit', edit_loan_path(loan) %>
+              <%= link_to 'Repay', repay_loan_path(loan), method: :patch, class: 'btn btn-danger', data: { confirm: 'Are you sure you want to repay this loan?' } if loan.state == 'open' %>
             <% if loan.state == 'waiting_for_adjustment_acceptance' %>
               <%= link_to 'Accept', accept_reject_loan_path(loan, value: 'open'), method: :patch, class: 'btn btn-danger', data: { confirm: 'Are you sure you want to accept this loan?' } %>
               <%= link_to 'Reject', accept_reject_loan_path(loan, value: 'rejected'), method: :patch, class: 'btn btn-danger', data: { confirm: 'Are you sure you want to reject this loan?' } %></td>

@@ -11,6 +11,35 @@
   </head>
 
   <body>
+  <% flash.each do |type, message| %>
+    <div class="flash <%= type %>">
+      <p><%= message %></p>
+    </div>
+  <% end %>
+  
     <%= yield %>
   </body>
 </html>
+<style>
+.flash {
+  margin: 10px;
+  padding: 15px;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.flash.notice {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.flash.error {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.flash.alert {
+  background-color: #fff3cd;
+  color: #856404;
+}
+</style>

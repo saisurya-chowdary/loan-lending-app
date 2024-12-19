@@ -17,7 +17,6 @@ class Loan < ApplicationRecord
   validates :interest_rate, presence: true
 
   after_initialize :set_default_state, if: :new_record?
-  after_create :schedule_interest_calculation
 
   def set_default_state
     self.state ||= :requested
@@ -37,11 +36,5 @@ class Loan < ApplicationRecord
       self.state = :readjustment_requested
       save!
     end
-  end
-
-  private
-
-  def schedule_interest_calculation
-    CalculateInterestJob.set(wait: 5.minutes).perform_later(self.id)
   end
 end

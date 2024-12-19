@@ -49,6 +49,7 @@ class LoansController < InheritedResources::Base
   end
 
   def create
+    return redirect_to loans_path, alert: "Your loan amount exceeds requested loan amount"  if loan_params[:amount].present? && loan_params[:amount]&.to_i >= current_user.wallet.balance
     @loan = current_user.loans.new(loan_params)
     if @loan.save
       redirect_to loans_path, notice: 'Loan requested successfully.'
@@ -85,14 +86,16 @@ class LoansController < InheritedResources::Base
   end
 
   def repay
-    amount_to_repay = @loan.amount + @loan.interest_rate
+    amount_to_repay = @loan.total_amount_due
     if current_user.wallet.balance >= amount_to_repay
       current_user.wallet.debit(amount_to_repay)
-      @loan.user.wallet.credit(amount_to_repay)
-      @loan.update(state: :closed)
+      AdminUser.last.wallet.credit(amount_to_repay)
+      @loan.update(state: "closed")
+      flash[:success] = "Your Loan is now closed"
+      redirect_to loans_path  
     else
-      @loan.user.wallet.debit(@loan.user.wallet&.balance)
-      @loan.update(state: :closed)
+      flash[:alert] = "Unfortunately, you don't have sufficient balance to repay this loan at this time."
+      redirect_to loans_path
     end
   end
 

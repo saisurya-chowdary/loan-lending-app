@@ -1,0 +1,9 @@
+my_first_job:
+   cron: "* * * * *" #it will run every day at 1am 
+   class: "CalculateInterestJob"
+   queue: default
+
+my_second_job:
+   cron: "* * * * *" #it will run every day at 1am 
+   class: "RepayLoanJob"
+   queue: default

@@ -44,8 +44,7 @@ ActiveAdmin.register Loan do
   member_action :approve, method: :put do
     loan = Loan.find(params[:id])
     loan.update(state: :approved)
-    CalculateInterestJob.perform_later(loan.id)
-    redirect_to admin_loan_path(loan), notice: "Loan approved and interest adjusted!"
+    redirect_to admin_loan_path(loan), notice: "Loan is approved and user confirmation awaited"
   end
 
   member_action :reject, method: :put do
@@ -68,13 +67,13 @@ ActiveAdmin.register Loan do
 
   controller do
     
-    # def edit
-    #   @loan = Loan.find_by(id: params[:id])
-    #   if @loan.state == "open" || @loan.state == "closed"
-    #     flash[:warning] = "Loan is already fulfilled. You cannot edit it now." 
-    #     redirect_to admin_loans_path
-    #   end
-    # end
+    def edit
+      @loan = Loan.find_by(id: params[:id])
+      if @loan.state == "open" || @loan.state == "closed"
+        flash[:warning] = "Loan is already fulfilled. You cannot edit it now." 
+        redirect_to admin_loans_path
+      end
+    end
     def update
       @loan = Loan.find_by(id: params[:id])
       if @loan.amount.to_f != permitted_params[:loan][:amount].to_f || 
